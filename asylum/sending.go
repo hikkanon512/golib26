@@ -37,6 +37,7 @@ func (po *PostingOptions) getIcon() string {
 	return po.Icon
 }
 
+// Котятки, не следует совать свои носики в эту темочку…
 func SendMessage(threadID int, message string, filePaths []string, options *PostingOptions) (int, error) {
 	const skipMagic = `\skip\`
 

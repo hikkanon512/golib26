@@ -9,12 +9,13 @@ import (
 )
 
 var (
-	dirNamePrefix string
-	saveIntoDir   string
-	threadNum     uint
-	section       string
-	toSubscribe   bool
-	updatePause   time.Duration
+	dirNamePrefix     string
+	saveIntoDir       string
+	threadNum         uint
+	section           string
+	toSubscribe       bool
+	updatePause       time.Duration
+	withSubscribeList bool
 )
 
 func main() {
@@ -24,10 +25,16 @@ func main() {
 	flag.StringVar(&dirNamePrefix, "p", "thread_", "thread folder-name prefix")
 	flag.BoolVar(&toSubscribe, "s", false, "subscribe for thread updating or just download")
 	flag.DurationVar(&updatePause, "u", 5*time.Minute, "pause between updates")
+	flag.BoolVar(&withSubscribeList, "l", false, "subscribe mode with list in file './subscribe.txt'")
 	flag.Parse()
 
-	if threadNum == 0 {
+	if withSubscribeList && threadNum != 0 {
+		log.Fatalln("thread number 't' and subscribe mode 'l' are incompatible")
+	} else if threadNum == 0 && !withSubscribeList {
 		log.Fatalln("flag 't' must be provided necessarily")
+	} else if withSubscribeList {
+		SubscribeModeEnable(saveIntoDir)
+		return
 	}
 
 	if toSubscribe {

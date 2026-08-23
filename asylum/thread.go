@@ -78,6 +78,7 @@ func GetMessages(section string, threadID uint) ([]Message, error) {
 }
 
 var ErrFatal = errors.New("error is fatal")
+var DirNamePrefix = "thread"
 
 func DownloadThread(section string, threadID uint, directory string) error {
 	const errEncounterLim = 8
@@ -87,7 +88,7 @@ func DownloadThread(section string, threadID uint, directory string) error {
 		return err
 	}
 
-	directory += fmt.Sprintf(`\thread_%s_%d`, section, threadID)
+	directory += fmt.Sprintf(`\%s_%s_%d`, DirNamePrefix, section, threadID)
 	if _, err = os.Stat(directory); err != nil && os.IsNotExist(err) {
 		if err = os.Mkdir(directory, modeOwningNonExec); err != nil {
 			return fmt.Errorf("sorry %w: %s", ErrFatal, err)

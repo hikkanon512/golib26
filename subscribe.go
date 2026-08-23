@@ -108,8 +108,7 @@ func subscribeThread(section string, threadID uint, directory string, identsMap 
 		}
 
 		if err := asylum.DownloadThread(section, threadID, directory); err != nil && err != asylum.ErrThreadNotFound {
-			log.Printf("ERROR: on thread /%s/%d/ has error %s\n", section, threadID, err)
-			return
+			log.Printf("Non-fatal ERROR: on thread /%s/%d/ has error %s\n", section, threadID, err)
 		} else if err == asylum.ErrThreadNotFound {
 			return
 		}

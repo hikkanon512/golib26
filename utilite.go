@@ -22,7 +22,7 @@ func main() {
 	flag.StringVar(&section, "b", "b", "dvach board (b, 2d, zog, se etc)")
 	flag.UintVar(&threadNum, "t", 0, "dvach thread number")
 	flag.StringVar(&saveIntoDir, "d", "./", "to-save directory path")
-	flag.StringVar(&dirNamePrefix, "p", "thread_", "thread folder-name prefix")
+	flag.StringVar(&asylum.DirNamePrefix, "p", asylum.DirNamePrefix, "thread folder-name prefix")
 	flag.BoolVar(&toSubscribe, "s", false, "subscribe for thread updating or just download")
 	flag.DurationVar(&updatePause, "u", 5*time.Minute, "pause between updates")
 	flag.BoolVar(&withSubscribeList, "l", false, "subscribe mode with list in file './subscribe.txt'")

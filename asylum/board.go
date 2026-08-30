@@ -3,6 +3,7 @@ package asylum
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 )
 
 type Board struct {
@@ -55,4 +56,17 @@ func GetBoardCatalog(section string) (*Board, []Thread, error) {
 	}
 
 	return &resp.Board, resp.Threads, nil
+}
+
+func SaveBoardMeta(b Board, x string) error {
+	threadFile, err := os.OpenFile(x, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, modeOwningNonExec)
+	if err != nil {
+		return err
+	} else if err = json.NewEncoder(threadFile).Encode(b); err != nil {
+		threadFile.Close()
+		return err
+	} else if err = threadFile.Close(); err != nil {
+		return err
+	}
+	return nil
 }

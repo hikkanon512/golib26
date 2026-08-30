@@ -16,6 +16,8 @@ var (
 	toSubscribe       bool
 	updatePause       time.Duration
 	withSubscribeList bool
+	toDump            bool
+	dumpDirectory     string
 )
 
 func main() {
@@ -26,7 +28,21 @@ func main() {
 	flag.BoolVar(&toSubscribe, "s", false, "subscribe for thread updating or just download")
 	flag.DurationVar(&updatePause, "u", 5*time.Minute, "pause between updates")
 	flag.BoolVar(&withSubscribeList, "l", false, "subscribe mode with list in file './subscribe.txt'")
+	flag.StringVar(&dumpDirectory, "dmp", "./", "to dump all the section (WARNING)")
+	flag.BoolVar(&toDump, "f", false, "force mode (ignore warnings)")
 	flag.Parse()
+
+	if dumpDirectory != "" {
+		if !toDump {
+			log.Fatalln("YOU must use force mode to use 'dmp' function!")
+		}
+		log.Printf("WARNING! Section /%s/ is saving onto: %s\n", dumpDirectory, saveIntoDir)
+		if err := DumpABoard(dumpDirectory, saveIntoDir); err != nil {
+			log.Fatalln(err)
+		}
+		log.Printf("SUCCESS! Section /%s/ was saved onto path: %s\n", dumpDirectory, saveIntoDir)
+		return
+	}
 
 	if withSubscribeList && threadNum != 0 {
 		log.Fatalln("thread number 't' and subscribe mode 'l' are incompatible")
